@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard — MediCare</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+    <div th:replace="~{layout/navbar :: navbar('dashboard')}"></div>
+    <div th:replace="~{layout/base :: alerts}"></div>
+
+    <main class="app-main">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="container">
+                <div class="page-header-content">
+                    <div>
+                        <h1 class="page-title">Welcome, <span th:text="${profile.fullName != null and !profile.fullName.isBlank() ? profile.fullName : user.username}">John Doe</span></h1>
+                        <p class="page-subtitle">Your personal healthcare portal &amp; medical record overview.</p>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <a th:href="@{/records/upload}" class="btn btn-primary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            Upload Record
+                        </a>
+                        <a th:href="@{/appointments/book}" class="btn btn-light">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            Book Appointment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Stats Overview -->
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon teal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-val" th:text="${totalRecords}">0</div>
+                        <div class="stat-lbl">Medical Records</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-val" th:text="${totalUpcoming}">0</div>
+                        <div class="stat-lbl">Upcoming Visits</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon amber">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-val"><span th:text="${profileCompletion}">0</span>%</div>
+                        <div class="stat-lbl">Profile Complete</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Bar -->
+            <div class="quick-actions">
+                <a th:href="@{/records/upload}" class="action-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Add Record
+                </a>
+                <a th:href="@{/records}" class="action-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    Browse Records
+                </a>
+                <a th:href="@{/appointments/book}" class="action-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="12" y1="12" x2="12" y2="16"></line>
+                        <line x1="10" y1="14" x2="14" y2="14"></line>
+                    </svg>
+                    Book Visit
+                </a>
+                <a th:href="@{/profile/edit}" class="action-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Update Profile
+                </a>
+            </div>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column: Recent Medical Records -->
+                <div>
+                    <div class="card" style="margin-bottom: 1.75rem;">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Medical Records</h2>
+                            <a th:href="@{/records}" class="btn btn-sm btn-light">View All Records &rarr;</a>
+                        </div>
+
+                        <div th:if="${!#lists.isEmpty(recentRecords)}" style="overflow-x: auto;">
+                            <table class="records-table">
+                                <thead>
+                                    <tr>
+                                        <th>Document / Test</th>
+                                        <th>Category</th>
+                                        <th>Date / Doctor</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="record : ${recentRecords}">
+                                        <td>
+                                            <strong style="color: var(--dark-900);" th:text="${record.title}">Title</strong>
+                                            <div th:if="${record.hasFile()}" style="font-size: 0.78rem; color: var(--primary); display: flex; align-items: center; gap: 0.25rem; margin-top: 0.2rem;">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                                Attachment Included
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-primary" th:text="${record.category}">Category</span>
+                                        </td>
+                                        <td>
+                                            <span style="font-size: 0.88rem; color: var(--dark-700);" th:text="${#temporals.format(record.uploadedAt, 'MMM dd, yyyy')}">Date</span>
+                                            <div th:if="${record.doctorName != null and !record.doctorName.isBlank()}" style="font-size: 0.8rem; color: var(--muted);" th:text="'Dr. ' + ${record.doctorName}">Doctor</div>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/records/{id}(id=${record.id})}" class="btn btn-sm btn-light" style="padding: 0.35rem 0.65rem;">
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${#lists.isEmpty(recentRecords)}" style="text-align: center; padding: 2.5rem 1rem; color: var(--muted);">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 0.75rem; color: var(--border);">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            </svg>
+                            <p style="margin-bottom: 1rem; font-weight: 500;">No medical records saved yet.</p>
+                            <a th:href="@{/records/upload}" class="btn btn-sm btn-primary">Upload First Record</a>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Appointments Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Upcoming Doctor Appointments</h2>
+                            <a th:href="@{/appointments}" class="btn btn-sm btn-light">View All &rarr;</a>
+                        </div>
+
+                        <div th:if="${!#lists.isEmpty(upcomingAppointments)}" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div th:each="appt : ${upcomingAppointments}" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--surface-subtle); border-radius: var(--radius-md); border-left: 4px solid var(--secondary);">
+                                <div>
+                                    <div style="font-weight: 700; color: var(--dark-900); font-size: 1.05rem;" th:text="'Dr. ' + ${appt.doctorName}">
+                                        Dr. Name
+                                    </div>
+                                    <div style="font-size: 0.88rem; color: var(--muted);" th:text="${appt.department} + ' • ' + ${appt.reason}">
+                                        Dept &amp; Reason
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-weight: 700; color: var(--secondary); font-size: 0.95rem;" th:text="${#temporals.format(appt.appointmentDate, 'MMM dd, yyyy')}">
+                                        Date
+                                    </div>
+                                    <div style="font-size: 0.82rem; color: var(--muted);" th:text="'at ' + ${#temporals.format(appt.appointmentTime, 'h:mm a')}">
+                                        Time
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${#lists.isEmpty(upcomingAppointments)}" style="text-align: center; padding: 2rem 1rem; color: var(--muted);">
+                            <p style="margin-bottom: 1rem;">No upcoming appointments scheduled.</p>
+                            <a th:href="@{/appointments/book}" class="btn btn-sm btn-outline">Schedule an Appointment</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Patient Emergency Card & Health Profile -->
+                <div>
+                    <div class="card" style="margin-bottom: 1.75rem;">
+                        <div class="card-header">
+                            <h2 class="card-title">Emergency Medical ID</h2>
+                            <a th:href="@{/profile/edit}" class="btn btn-sm btn-light">Edit</a>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;">
+                            <div class="avatar-initial" style="width: 48px; height: 48px; font-size: 1.3rem;" th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}">
+                                U
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.15rem; color: var(--dark-900);" th:text="${profile.fullName != null and !profile.fullName.isBlank() ? profile.fullName : user.username}">Full Name</h3>
+                                <span class="badge badge-primary" th:text="'Patient ID: #MC-' + ${#numbers.formatInteger(user.id, 4)}">Patient ID: #MC-0001</span>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--border-light); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.92rem;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--muted); font-weight: 600;">Blood Group:</span>
+                                <strong style="color: var(--danger); font-size: 1rem;" th:text="${profile.bloodGroup != null and !profile.bloodGroup.isBlank() ? profile.bloodGroup : 'Not set'}">Not set</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--muted); font-weight: 600;">Emergency Contact:</span>
+                                <span th:text="${profile.emergencyContact != null and !profile.emergencyContact.isBlank() ? profile.emergencyContact : 'Not provided'}">Not provided</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--muted); font-weight: 600;">Known Allergies:</span>
+                                <span th:text="${profile.allergies != null and !profile.allergies.isBlank() ? profile.allergies : 'None reported'}">None reported</span>
+                            </div>
+                        </div>
+
+                        <div class="emergency-info-box">
+                            <h4>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Medical Alert
+                            </h4>
+                            <p style="font-size: 0.85rem; color: #9f1239;" th:text="${(profile.allergies != null and !profile.allergies.isBlank()) ? profile.allergies : ((profile.existingConditions != null and !profile.existingConditions.isBlank()) ? profile.existingConditions : 'No critical emergency medical conditions listed.')}">
+                                No critical emergency medical conditions listed.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Profile Completion Progress -->
+                    <div class="card">
+                        <h3 style="font-size: 1.05rem; margin-bottom: 0.5rem;">Profile Health Status</h3>
+                        <p style="font-size: 0.85rem; color: var(--muted);">
+                            Complete your profile so emergency doctors and nurses have full background.
+                        </p>
+                        
+                        <div class="progress-container">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;">
+                                <span>Health Profile</span>
+                                <span><span th:text="${profileCompletion}">0</span>%</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" th:style="'width: ' + ${profileCompletion} + '%;'"></div>
+                            </div>
+                        </div>
+
+                        <a th:if="${profileCompletion < 100}" th:href="@{/profile/edit}" class="btn btn-sm btn-outline" style="width: 100%; margin-top: 0.5rem;">
+                            Complete Profile Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+</body>
+</html>

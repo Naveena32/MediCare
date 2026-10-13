@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Health Profile — MediCare</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body>
+
+    <div th:replace="~{layout/navbar :: navbar('profile')}"></div>
+    <div th:replace="~{layout/base :: alerts}"></div>
+
+    <main class="app-main">
+        <div class="page-header">
+            <div class="container">
+                <div class="page-header-content">
+                    <div>
+                        <h1 class="page-title">Update Health Profile</h1>
+                        <p class="page-subtitle">Keep your medical history, prescriptions, and emergency contacts accurate.</p>
+                    </div>
+                    <div>
+                        <a th:href="@{/profile}" class="btn btn-light">
+                            &larr; Back to Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="card" style="max-width: 820px; margin: 0 auto;">
+                <form th:action="@{/profile/edit}" th:object="${profileDto}" method="post" novalidate>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-light); color: var(--primary);">
+                        1. Personal Information
+                    </h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" th:field="*{firstName}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" th:field="*{lastName}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="fullName">Display / Full Legal Name *</label>
+                            <input type="text" id="fullName" th:field="*{fullName}" class="form-control" required>
+                            <div class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" style="color: var(--danger); font-size: 0.85rem; margin-top: 0.25rem;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" th:field="*{email}" class="form-control" required>
+                            <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: var(--danger); font-size: 0.85rem; margin-top: 0.25rem;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="text" id="phone" th:field="*{phone}" class="form-control" placeholder="+1 (555) 000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" th:field="*{gender}" class="form-select">
+                                <option value="">Select Gender</option>
+                                <option th:each="g : ${genderChoices}" th:value="${g}" th:text="${g}">Male</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Residential Address</label>
+                        <input type="text" id="address" th:field="*{address}" class="form-control" placeholder="123 Health Ave, Suite 4">
+                    </div>
+
+                    <h3 style="font-size: 1.25rem; margin: 2rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-light); color: var(--primary);">
+                        2. Emergency &amp; Vitals
+                    </h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="bloodGroup">Blood Group</label>
+                            <select id="bloodGroup" th:field="*{bloodGroup}" class="form-select">
+                                <option value="">Select Blood Group</option>
+                                <option th:each="bg : ${bloodGroups}" th:value="${bg}" th:text="${bg}">O+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyContact">Emergency Contact (Name &amp; Phone)</label>
+                            <input type="text" id="emergencyContact" th:field="*{emergencyContact}" class="form-control" placeholder="Name &amp; Phone (e.g. Jane Doe - 555-1234)">
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 1.25rem; margin: 2rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-light); color: var(--primary);">
+                        3. Clinical History &amp; Allergies
+                    </h3>
+
+                    <div class="form-group">
+                        <label for="allergies">Known Allergies (Medications, Foods, Latex, etc.)</label>
+                        <textarea id="allergies" th:field="*{allergies}" class="form-control" rows="2" placeholder="Penicillin, Peanuts, Latex..."></textarea>
+                        <small class="form-help">Critical for doctors to avoid prescribing dangerous medications.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentMedications">Current Daily Medications &amp; Dosages</label>
+                        <textarea id="currentMedications" th:field="*{currentMedications}" class="form-control" rows="2" placeholder="Metformin 500mg, Lisinopril 10mg..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="existingConditions">Existing / Chronic Conditions (e.g. Asthma, Diabetes)</label>
+                        <textarea id="existingConditions" th:field="*{existingConditions}" class="form-control" rows="2" placeholder="Hypertension, Type 2 Diabetes..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pastSurgeries">Past Surgeries &amp; Major Hospitalizations</label>
+                        <textarea id="pastSurgeries" th:field="*{pastSurgeries}" class="form-control" rows="2" placeholder="Appendectomy (2018)..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="medicalHistory">Other Medical Notes &amp; Family History</label>
+                        <textarea id="medicalHistory" th:field="*{medicalHistory}" class="form-control" rows="3" placeholder="Prior diagnoses, chronic conditions..."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light);">
+                        <button type="submit" class="btn btn-primary btn-lg" style="flex: 2;">
+                            Save Health Profile
+                        </button>
+                        <a th:href="@{/profile}" class="btn btn-light btn-lg" style="flex: 1;">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+</body>
+</html>

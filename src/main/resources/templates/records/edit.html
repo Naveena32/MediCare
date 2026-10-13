@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Edit ' + ${record.title} + ' — MediCare'">Edit Record — MediCare</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/records.css}">
+</head>
+<body>
+
+    <div th:replace="~{layout/navbar :: navbar('records')}"></div>
+    <div th:replace="~{layout/base :: alerts}"></div>
+
+    <main class="app-main">
+        <div class="page-header">
+            <div class="container">
+                <div class="page-header-content">
+                    <div>
+                        <h1 class="page-title">Edit Medical Record</h1>
+                        <p class="page-subtitle">Update record metadata, notes, or attached file.</p>
+                    </div>
+                    <div>
+                        <a th:href="@{/records/{id}(id=${record.id})}" class="btn btn-light">
+                            &larr; Back to Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="card form-container-card">
+                <form th:action="@{/records/{id}/edit(id=${record.id})}" th:object="${recordDto}" method="post" enctype="multipart/form-data" novalidate>
+                    <div class="form-group">
+                        <label for="title">Record Title *</label>
+                        <input type="text" id="title" th:field="*{title}" class="form-control" required>
+                        <div class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: var(--danger); font-size: 0.85rem; margin-top: 0.25rem;"></div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select id="category" th:field="*{category}" class="form-select">
+                                <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${recordDto.category == cat}">Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recordDate">Date of Test/Visit</label>
+                            <input type="date" id="recordDate" th:field="*{recordDate}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doctorName">Attending Doctor / Clinic</label>
+                        <input type="text" id="doctorName" th:field="*{doctorName}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Update Document / Attachment</label>
+                        <div th:if="${record.hasFile()}" style="font-size: 0.88rem; color: var(--muted); margin-bottom: 0.5rem;">
+                            Currently: <a th:href="@{${record.filePath}}" target="_blank" style="font-weight: 600;" th:text="${record.fileName}">filename</a>
+                        </div>
+                        <input type="file" id="file" th:field="*{file}" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                        <small class="form-help">Leave empty to keep existing file.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Clinical Notes &amp; Findings</label>
+                        <textarea id="notes" th:field="*{notes}" class="form-control" rows="4"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="submit" class="btn btn-primary btn-lg" style="flex: 2;">
+                            Save Changes
+                        </button>
+                        <a th:href="@{/records/{id}(id=${record.id})}" class="btn btn-light btn-lg" style="flex: 1;">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+</body>
+</html>

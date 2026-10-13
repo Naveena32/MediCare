@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title, extraCss)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace="${title}">MediCare — Smart Patient Health Records & Portal</title>
+    <meta name="description" content="Secure, unified health record management and patient care portal.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <th:block th:replace="${extraCss}"></th:block>
+</head>
+<body>
+
+    <!-- Alert / Toast Messages fragment -->
+    <div th:fragment="alerts" class="container alert-container" th:if="${successMessage != null or errorMessage != null or infoMessage != null}">
+        <div class="alert alert-success" th:if="${successMessage != null}">
+            <span th:text="${successMessage}">Success message</span>
+            <button type="button" class="alert-close" onclick="this.parentElement.remove();">&times;</button>
+        </div>
+        <div class="alert alert-danger" th:if="${errorMessage != null}">
+            <span th:text="${errorMessage}">Error message</span>
+            <button type="button" class="alert-close" onclick="this.parentElement.remove();">&times;</button>
+        </div>
+        <div class="alert alert-info" th:if="${infoMessage != null}">
+            <span th:text="${infoMessage}">Info message</span>
+            <button type="button" class="alert-close" onclick="this.parentElement.remove();">&times;</button>
+        </div>
+    </div>
+
+</body>
+</html>

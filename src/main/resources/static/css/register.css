@@ -1,0 +1,234 @@
+/* ===========================
+   Color Variables
+=========================== */
+:root {
+  --color-primary: #0d9488;
+  --color-primary-dark: #0f766e;
+  --color-secondary: #1e293b;
+  --color-accent: #14b8a6;
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #334155;
+  --color-heading: #0f172a;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+  --shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
+  --radius: 12px;
+}
+
+/* ===========================
+   Reset
+=========================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===========================
+   Body
+=========================== */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================
+   Links
+=========================== */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===========================
+   Header
+=========================== */
+header {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+nav {
+  width: min(100% - 2rem, 1120px);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo svg {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary);
+}
+
+.back-link {
+  color: var(--color-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--color-primary);
+}
+
+/* ===========================
+   Main
+=========================== */
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+/* ===========================
+   Card (Register Container)
+=========================== */
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.card h1 {
+  font-size: 1.75rem;
+  color: var(--color-heading);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.card .subtitle {
+  color: var(--color-muted);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+/* ===========================
+   Form
+=========================== */
+.card form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================
+   Form Group
+=========================== */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  color: var(--color-heading);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--color-heading);
+  background-color: var(--color-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* ===========================
+   Button
+=========================== */
+.btn {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+  transition: transform 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+.btn:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(13, 148, 136, 0.35);
+}
+
+/* ===========================
+   Login Line
+=========================== */
+.login-line {
+  text-align: center;
+  margin-top: 1.75rem;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.login-line a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.login-line a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   Footer
+=========================== */
+footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 480px) {
+  .card {
+    padding: 2rem;
+  }
+
+  .card h1 {
+    font-size: 1.5rem;
+  }
+}

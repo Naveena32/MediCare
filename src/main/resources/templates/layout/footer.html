@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<footer class="site-footer" th:fragment="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                    <span>MediCare</span>
+                </div>
+                <p>
+                    Secure, patient-first health records platform. Connecting patients, physicians, and medical histories seamlessly.
+                </p>
+                <div class="footer-compliance">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    HIPAA & Privacy Standards Aligned
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Navigation</h4>
+                <ul class="footer-links">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/dashboard}">Patient Dashboard</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/records}">Records Vault</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/appointments}">Appointments</a></li>
+                    <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Sign In</a></li>
+                    <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register Account</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Support & Clinic</h4>
+                <ul class="footer-links">
+                    <li><a th:href="@{/contact}">Help & Contact</a></li>
+                    <li><a th:href="@{/contact}">Clinic Locations</a></li>
+                    <li><a th:href="@{/contact}">Emergency Support</a></li>
+                    <li><a th:href="@{/contact}">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2026</span> MediCare Health Portal. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

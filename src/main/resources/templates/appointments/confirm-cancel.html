@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Appointment — MediCare</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
+<body>
+
+    <div th:replace="~{layout/navbar :: navbar('appointments')}"></div>
+    <div th:replace="~{layout/base :: alerts}"></div>
+
+    <main class="app-main">
+        <div class="auth-wrapper">
+            <div class="auth-card" style="border-top: 4px solid var(--danger);">
+                <div class="auth-header">
+                    <div class="auth-logo" style="background: var(--danger-light); color: var(--danger);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                    </div>
+                    <h1 class="auth-title">Cancel Appointment?</h1>
+                    <p class="auth-subtitle">Are you sure you want to cancel this doctor visit?</p>
+                </div>
+
+                <div style="background: var(--surface-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.75rem; border: 1px solid var(--border);">
+                    <strong style="color: var(--dark-900); font-size: 1.15rem; display: block; margin-bottom: 0.25rem;" th:text="'Dr. ' + ${appointment.doctorName} + ' (' + ${appointment.department} + ')'">
+                        Dr. Name (Department)
+                    </strong>
+                    <div style="font-size: 0.95rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem;" th:text="${#temporals.format(appointment.appointmentDate, 'MMMM dd, yyyy')} + ' at ' + ${#temporals.format(appointment.appointmentTime, 'h:mm a')}">
+                        Date at Time
+                    </div>
+                    <p style="font-size: 0.88rem; color: var(--muted); margin: 0;" th:text="'Reason: ' + ${appointment.reason}">Reason</p>
+                </div>
+
+                <form th:action="@{/appointments/{id}/cancel(id=${appointment.id})}" method="post">
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn btn-danger btn-lg" style="flex: 1;">
+                            Yes, Cancel Visit
+                        </button>
+                        <a th:href="@{/appointments}" class="btn btn-light btn-lg" style="flex: 1;">
+                            Keep Appointment
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+</body>
+</html>

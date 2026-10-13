@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Doctor Appointment — MediCare</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/records.css}">
+</head>
+<body>
+
+    <div th:replace="~{layout/navbar :: navbar('appointments')}"></div>
+    <div th:replace="~{layout/base :: alerts}"></div>
+
+    <main class="app-main">
+        <div class="page-header">
+            <div class="container">
+                <div class="page-header-content">
+                    <div>
+                        <h1 class="page-title">Book Doctor Appointment</h1>
+                        <p class="page-subtitle">Schedule a consultation with our medical specialists.</p>
+                    </div>
+                    <div>
+                        <a th:href="@{/appointments}" class="btn btn-light">
+                            &larr; View Appointments
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="card form-container-card">
+                <form th:action="@{/appointments/book}" th:object="${appointmentDto}" method="post" novalidate>
+                    <div class="form-group">
+                        <label for="doctorName">Doctor Name *</label>
+                        <input type="text" id="doctorName" th:field="*{doctorName}" class="form-control" placeholder="e.g. Dr. Alan Grant" required>
+                        <div class="field-error" th:if="${#fields.hasErrors('doctorName')}" th:errors="*{doctorName}" style="color: var(--danger); font-size: 0.85rem; margin-top: 0.25rem;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Specialty / Medical Department *</label>
+                        <select id="department" th:field="*{department}" class="form-select">
+                            <option th:each="dept : ${departments}" th:value="${dept}" th:text="${dept}">General Medicine</option>
+                        </select>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="appointmentDate">Preferred Date *</label>
+                            <input type="date" id="appointmentDate" th:field="*{appointmentDate}" class="form-control" required>
+                            <div class="field-error" th:if="${#fields.hasErrors('appointmentDate')}" th:errors="*{appointmentDate}" style="color: var(--danger); font-size: 0.85rem; margin-top: 0.25rem;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointmentTime">Preferred Time *</label>
+                            <input type="time" id="appointmentTime" th:field="*{appointmentTime}" class="form-control" required>
+                            <div class="field-error" th:if="${#fields.hasErrors('appointmentTime')}" th:errors="*{appointmentTime}" style="color: var(--danger); font-size: 0.85rem; margin-top: 0.25rem;"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reason">Primary Reason for Visit *</label>
+                        <input type="text" id="reason" th:field="*{reason}" class="form-control" placeholder="e.g. Routine Consultation, Knee Pain" required>
+                        <div class="field-error" th:if="${#fields.hasErrors('reason')}" th:errors="*{reason}" style="color: var(--danger); font-size: 0.85rem; margin-top: 0.25rem;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Additional Notes / Symptoms</label>
+                        <textarea id="notes" th:field="*{notes}" class="form-control" rows="3" placeholder="Special requests, current symptoms, etc."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="submit" class="btn btn-primary btn-lg" style="flex: 2;">
+                            Confirm &amp; Schedule Appointment
+                        </button>
+                        <a th:href="@{/appointments}" class="btn btn-light btn-lg" style="flex: 1;">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+</body>
+</html>
